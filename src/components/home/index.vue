@@ -1,13 +1,12 @@
 <template>
   <div class="home-wrap">
-    <left/>
-    <right/>
+
+      <left/>
+      <right/>
   </div>
 </template>
-<style scoped>
-  .home-wrap {
-    height: 100%;
-  }
+<style lang="scss" scoped>
+  @import "../../assets/style/home/index.scss";
 </style>
 <script>
   import left from './left';
@@ -18,7 +17,7 @@
     },
     methods: {},
     components: {
-      left,right
+      left, right
     }
   }
 </script>

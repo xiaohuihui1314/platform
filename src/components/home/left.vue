@@ -1,56 +1,84 @@
 <template>
   <div class="left-wrap">
-    <Menu theme="dark" class="left-menu">
+    <Menu theme="dark" class="left-menu" active-name="01">
       <h1 class="banner">Banner</h1>
-      <Submenu name="1">
+      <Submenu :name="index" v-for="(menu,index) in menuList">
         <template slot="title">
-          <Icon type="ios-paper"></Icon>
-          内容管理
+          <Icon :type="menu.icon"></Icon>
+          {{menu.name}}
         </template>
-        <Menu-item name="1-1">文章管理</Menu-item>
-        <Menu-item name="1-2">评论管理</Menu-item>
-        <Menu-item name="1-3">举报管理</Menu-item>
-      </Submenu>
-      <Submenu name="2">
-        <template slot="title">
-          <Icon type="ios-people"></Icon>
-          用户管理
-        </template>
-        <Menu-item name="2-1">新增用户</Menu-item>
-        <Menu-item name="2-2">活跃用户</Menu-item>
-      </Submenu>
-      <Submenu name="3">
-        <template slot="title">
-          <Icon type="stats-bars"></Icon>
-          统计分析
-        </template>
-        <Menu-group title="使用">
-          <Menu-item name="3-1">新增和启动</Menu-item>
-          <Menu-item name="3-2">活跃分析</Menu-item>
-          <Menu-item name="3-3">时段分析</Menu-item>
-        </Menu-group>
-        <Menu-group title="留存">
-          <Menu-item name="3-4">用户留存</Menu-item>
-          <Menu-item name="3-5">流失用户</Menu-item>
-        </Menu-group>
+        <router-link :to="{path:menuItem.url}" v-for="(menuItem,index1) in menu.children">
+          <Menu-item :name="''+index+index1">
+            {{menuItem.name}}
+          </Menu-item>
+        </router-link>
       </Submenu>
     </Menu>
   </div>
 </template>
-<style scoped>
-  .left-wrap{
-    float: left;
-    width: 240px;
-    height: 100%;
-  }
-  .left-menu  {
-    width: 240px;
-    height: 100%;
-  }
-  .banner{
-    padding: 25px;
-    text-align: center;
-    color: #fff;
-  }
-
+<style lang="scss" scoped>
+  @import "../../assets/style/home/left.scss";
 </style>
+<script>
+  export default{
+    data(){
+      return {
+        menuList: [
+          {
+            name: "个人中心",
+            icon:"person",
+            children: [
+              {
+                name: "用户详情",
+                url: "users"
+              },
+              {
+                name: "朋友圈",
+                url: "friends"
+              },
+              {
+                name: "我的收藏",
+                url: "collection"
+
+              },
+              {
+                name: "我的留言板",
+                url: "messageBoard"
+              },
+              {
+                name: "个人主题",
+                url: "theme"
+              }
+            ]
+          },
+          {
+            name: "CMS",
+            icon:"easel",
+            children: [
+              {
+                name: "广告位管理",
+                url: "adPosition"
+              },
+              {
+                name: "广告管理",
+                url: "advert"
+              },
+              {
+                name: "导航菜单",
+                url: "menu"
+              },
+              {
+                name: "分类导航菜单",
+                url: "cMenu"
+              },
+              {
+                name: "帮助中心",
+                url: "help"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+</script>

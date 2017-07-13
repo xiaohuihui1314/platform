@@ -1,14 +1,14 @@
 <template>
   <div class="left-wrap">
-    <Menu theme="dark" class="left-menu" active-name="01">
+    <Menu theme="dark" class="left-menu"  @on-select="getSubMenuName">
       <h1 class="banner">Banner</h1>
-      <Submenu :name="index" v-for="(menu,index) in menuList">
+      <Submenu :name="menu.name" v-for="(menu,index) in menuList">
         <template slot="title">
           <Icon :type="menu.icon"></Icon>
           {{menu.name}}
         </template>
-        <router-link :to="{path:menuItem.url}" v-for="(menuItem,index1) in menu.children">
-          <Menu-item :name="''+index+index1">
+        <router-link :to="{path:menuItem.url}"  v-for="(menuItem,index1) in menu.children">
+          <Menu-item :name="menu.name+'-'+index1">
             {{menuItem.name}}
           </Menu-item>
         </router-link>
@@ -26,7 +26,7 @@
         menuList: [
           {
             name: "个人中心",
-            icon:"person",
+            icon: "person",
             children: [
               {
                 name: "用户详情",
@@ -53,7 +53,7 @@
           },
           {
             name: "CMS",
-            icon:"easel",
+            icon: "easel",
             children: [
               {
                 name: "广告位管理",
@@ -78,6 +78,14 @@
             ]
           }
         ]
+      }
+    },
+    mounted(){
+    },
+    methods: {
+      getSubMenuName(name){
+          console.log(name.substr(0, name.indexOf("-")))
+        this.$store.dispatch('Action_Menu_Name', name.substr(0, name.indexOf("-")));
       }
     }
   }

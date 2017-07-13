@@ -1,5 +1,5 @@
 const state = {
-    index:333
+  index:0
 };
 // getters
 const getters = {

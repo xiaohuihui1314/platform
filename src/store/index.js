@@ -1,6 +1,7 @@
 import vue  from 'vue';
 import vuex from 'vuex';
 import header from './modules/header';
+import left from './modules/left';
 vue.use(vuex);
 // state 定义了应用状态的数据结构，同样可以在这里设置默认的初始状态
 // Actions 即是定义提交触发更改信息的描述，常见的例子有从服务端获取数据，
@@ -12,7 +13,8 @@ vue.use(vuex);
 // 随着应用复杂度的增加，这种拆分能够更好地组织代码，更多细节参考这里。
 const store=new vuex.Store({
   modules: {
-    header
+    header,
+    left
   }
 });
 export  default  store;

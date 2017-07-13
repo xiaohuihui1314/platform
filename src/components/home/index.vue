@@ -11,9 +11,13 @@
 <script>
   import left from './left';
   import right from './right';
+  import {mapGetters} from 'vuex'
   export default {
     data () {
       return {}
+    },
+    mounted(){
+      console.log(this);
     },
     methods: {},
     components: {

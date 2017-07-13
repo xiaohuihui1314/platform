@@ -32,6 +32,9 @@
         }
       }
     },
+    mounted(){
+      console.log(this);
+    },
     methods: {
       goLogin () {
         this.$router.push({path: 'home'});

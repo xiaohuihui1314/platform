@@ -1,6 +1,5 @@
-import MyLoading from '../../common/loadding.vue';
 import Vue from 'vue';
-
+import MyLoading from '../../common/loadding.vue';
 // let MessageConstructor = Vue.extend(require('../../common/loadding.vue'));
 let MessageConstructor = Vue.extend(MyLoading);
 let instance;

@@ -33,8 +33,8 @@
       })
     },
     watch: {
-      '$route': function (route) {
-        console.log(route)
+      '$route': function (route,asd,ad) {
+        console.log(route,asd,ad)
         console.log(route.params)
         this.secondary.name = route.matched[0].name;
         this.secondary.path = route.matched[0].path;

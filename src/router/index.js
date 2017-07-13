@@ -9,58 +9,85 @@ export default new Router({
     {
       path: '/',
       name: 'login',
-      component: require("@/components/login")
-    }, {
+      component: function (resolve) {
+        require(['components/login'], resolve);
+      }
+    },
+    {
       path: '/home',
       name: '主页',
-      component: require("@/components/home"),
+      component: function (resolve) {
+        require(['components/home'], resolve);
+      },
       children: [
         // 个人中心
         {
           path: '/',
-          component: require("@/components/home/homePage"),
+          component: function (resolve) {
+            require(['components/home/homePage'], resolve);
+          }
         }, {
           path: '/users',
           name: '用户详情',
-          component: require("@/components/user/userDetails"),
+          component: function (resolve) {
+            require(['components/user/userDetails'], resolve);
+          }
         }, {
           path: '/collection',
           name: '我的收藏',
-          component: require("@/components/user/collection"),
+          component: function (resolve) {
+            require(['components/user/collection'], resolve);
+          }
         }, {
           path: '/messageBoard',
           name: '留言板',
-          component: require("@/components/user/messageBoard"),
+          component: function (resolve) {
+            require(['components/user/messageBoard'], resolve);
+          }
         }, {
           path: '/theme',
           name: '个人主题',
-          component: require("@/components/user/theme"),
+          component: function (resolve) {
+            require(['components/user/theme'], resolve);
+          }
         }, {
           path: '/friends',
           name: '朋友圈',
-          component: require("@/components/user/friends"),
+          component: function (resolve) {
+            require(['components/user/friends'], resolve);
+          }
         },
         // CMS
-       {
+        {
           path: '/adPosition',
           name: '广告位管理',
-          component: require("@/components/cms/adPosition"),
+          component: function (resolve) {
+            require(['components/cms/adPosition'], resolve);
+          }
         }, {
           path: '/advert',
           name: '广告管理',
-          component: require("@/components/cms/advert"),
+          component: function (resolve) {
+            require(['components/cms/advert'], resolve);
+          }
         }, {
           path: '/menu',
           name: '导航菜单',
-          component: require("@/components/cms/menu"),
+          component: function (resolve) {
+            require(['components/cms/menu'], resolve);
+          }
         }, {
           path: '/cMenu',
           name: '分类导航菜单',
-          component: require("@/components/cms/cMenu"),
+          component: function (resolve) {
+            require(['components/cms/cMenu'], resolve);
+          }
         }, {
           path: '/help',
           name: '帮助中心',
-          component: require("@/components/cms/help"),
+          component: function (resolve) {
+            require(['components/cms/help'], resolve);
+          }
         }
       ]
     }

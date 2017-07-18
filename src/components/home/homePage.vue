@@ -12,6 +12,7 @@
       </Carousel-item>
       <Carousel-item>
         <div class="demo-carousel">2</div>
+
       </Carousel-item>
       <Carousel-item>
         <div class="demo-carousel">3</div>

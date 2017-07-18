@@ -1,6 +1,8 @@
-import {baseUrl} from '../../configs'
+import {baseUrl,imgUrl} from '../../configs'
 export default {
   install(Vue){
+    Vue.prototype.file=imgUrl;
+    // ajax
     Vue.prototype.fetch = async(type = 'GET', url = '', data = {}) => {
       type = type.toUpperCase();
       url = baseUrl + url;

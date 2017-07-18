@@ -13,6 +13,7 @@
   margin-left: 55px;
   font-size: 28px;
 }
+
 .login-form-wrap {
   position: absolute;
   top: 80px;
@@ -43,9 +44,14 @@
 .ivu-input-wrapper {
   margin-bottom: 15px;
 }
-
+.login-message{
+  height: 18px;
+  font-size: 16px;
+  color: #f00;
+  text-align: center;
+}
 .ivu-btn {
-  margin-top: 25px;
+  margin-top: 15px;
 }
 
 .login-footer {

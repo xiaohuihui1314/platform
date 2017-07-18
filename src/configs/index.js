@@ -7,10 +7,12 @@
  *
  */
 let baseUrl;
+let imgUrl;
 let routerMode;
 
 
 baseUrl="http://localhost:3000";
+imgUrl="http://localhost:3000/images/";
 // if (process.env.NODE_ENV == 'development') {
 //   baseUrl = '';
 //   routerMode = 'hash'
@@ -21,5 +23,5 @@ baseUrl="http://localhost:3000";
 
 export {
   baseUrl,
-  routerMode
+  imgUrl
 }

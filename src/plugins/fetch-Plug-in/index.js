@@ -1,12 +1,21 @@
-import {baseUrl,imgUrl} from '../../configs'
+import {baseUrl, imgUrl} from '../../configs'
 export default {
   install(Vue){
-    Vue.prototype.file=imgUrl;
+    Vue.prototype.$file = imgUrl;
     // ajax
     Vue.prototype.fetch = async(type = 'GET', url = '', data = {}) => {
       type = type.toUpperCase();
       url = baseUrl + url;
-      if (!window.fetch) {
+      if (type === "GET" && !Object.is(JSON.stringify(data), "{}")) {
+        const paramsArray=[];
+        Object.keys(data).forEach(key => paramsArray.push(key + '=' + data[key]));
+        if (url.search(/\?/) === -1) {
+          url += '?' + paramsArray.join('&')
+        } else {
+          url += '&' + paramsArray.join('&')
+        }
+      }
+      if (window.fetch) {
         let requestConfig = {
           // credentials: 'include', // 请求带上cookies，是每次请求保持会话一直
           method: type,

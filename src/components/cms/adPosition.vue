@@ -2,11 +2,12 @@
   <div>
     <h1 class="title">广告位管理</h1>
     <div class="box-wrap">
-      <Button type="success" @click="modalState=true">添加广告位</Button>
+      <Button type="success" @click="addModal=true">添加广告位</Button>
     </div>
+    <Table border :columns="adPositionCol" :data="adPositionData"></Table>
     <Modal
       title="添加广告位"
-      v-model="modalState"
+      v-model="addModal"
       class-name="vertical-center-modal">
       <Form ref="adPositionForm" :model="adPositionForm" :rules="ruleCustom" :label-width="80">
         <Form-item label="广告位" prop="name">
@@ -20,10 +21,19 @@
         </Form-item>
       </Form>
       <div slot="footer">
-        <Button type="error" size="large" long :loading="modalLoad" @click="postForm('adPositionForm')">删除</Button>
+        <Button type="success" size="large" long :loading="modalLoad" @click="postForm('adPositionForm')">添加</Button>
       </div>
     </Modal>
-    <Table border :columns="columns7" :data="adPositionData"></Table>
+    <Modal
+      title="删除广告位"
+      v-model="deleteModal"
+      class-name="vertical-center-modal">
+      <h2 style="text-align: center">确定删除广告位吗？</h2>
+      <div slot="footer">
+        <Button type="text" @click="closeModal">取消</Button>
+        <Button type="primary" :loading="modalLoad" @click="removeForm">确定</Button>
+      </div>
+    </Modal>
   </div>
 </template>
 <style>
@@ -49,28 +59,18 @@
         }
       };
       return {
-        columns7: [
+        adPositionCol: [
           {
-            title: '姓名',
-            key: 'name',
-            render: (h, params) => {
-              return h('div', [
-                h('Icon', {
-                  props: {
-                    type: 'person'
-                  }
-                }),
-                h('strong', params.row.name)
-              ]);
-            }
+            title: '广告位名称',
+            key: 'name'
           },
           {
-            title: '年龄',
-            key: 'age'
+            title: '描述',
+            key: 'description'
           },
           {
-            title: '地址',
-            key: 'address'
+            title: '排序',
+            key: 'sort'
           },
           {
             title: '操作',
@@ -79,20 +79,20 @@
             align: 'center',
             render: (h, params) => {
               return h('div', [
-                h('Button', {
-                  props: {
-                    type: 'primary',
-                    size: 'small'
-                  },
-                  style: {
-                    marginRight: '5px'
-                  },
-                  on: {
-                    click: () => {
-                      this.show(params.index)
-                    }
-                  }
-                }, '查看'),
+//                h('Button', {
+//                  props: {
+//                    type: 'primary',
+//                    size: 'small'
+//                  },
+//                  style: {
+//                    marginRight: '5px'
+//                  },
+//                  on: {
+//                    click: () => {
+//                      this.show(params.index)
+//                    }
+//                  }
+//                }, '查看'),
                 h('Button', {
                   props: {
                     type: 'error',
@@ -100,7 +100,7 @@
                   },
                   on: {
                     click: () => {
-                      this.remove(params.index)
+                      this.removePrompt(params)
                     }
                   }
                 }, '删除')
@@ -109,13 +109,18 @@
           }
         ],
         adPositionData: [],
-        modalState: false,
+        addModal: false,
+        deleteModal: false,
         modalLoad: false,
         aa: true,
         adPositionForm: {
           name: null,
           description: null,
           sort: null
+        },
+        deleteData: {
+          index: null,
+          id: null
         },
         ruleCustom: {
           name: [
@@ -125,7 +130,7 @@
             {required: true, message: '请填写描述', trigger: 'blur'}
           ],
           sort: [
-            {validator: validateSort,required: true, trigger: 'blur'}
+            {validator: validateSort, required: true, trigger: 'blur'}
           ]
         }
       }
@@ -137,24 +142,46 @@
       async getAdPosition(){
         const getData = () => this.fetch("get", "/getAdsense");
         let res = await  getData();
+        this.adPositionData = res;
         console.log(res)
       },
       postForm(name){
         this.modalLoad = true;
-        this.$refs[name].validate((valid) => {
+        this.$refs[name].validate(async(valid) => {
           if (valid) {
-            this.modalState = false;
+            this.addModal = false;
             this.modalLoad = false;
-            this.$Message.success('提交成功!');
+            const getData = (data) => this.fetch("post", "/createAdsense", data);
+            let res = await  getData(this.adPositionForm);
+            if (res.code === 200) {
+              this.$Message.success(res.message);
+              this.getAdPosition();
+            } else {
+              this.$Message.error(res.message);
+            }
           } else {
-            setTimeout(() => {
-              this.modalLoad = false;
-            }, 2000);
-            this.$Message.error('表单验证失败!');
+            this.modalLoad = false;
           }
         })
-
-
+      },
+      removePrompt (row) {
+        this.deleteData.id = row.row._id;
+        this.deleteData.index = row.index;
+        this.deleteModal = true;
+      },
+      async removeForm () {
+        const getData = () => this.fetch("post", "/deleteAdsense", {id: this.deleteData.id});
+        let res = await  getData();
+        this.deleteModal = false;
+        if (res.code === 200) {
+          this.adPositionData.splice(this.deleteData.index, 1);
+          this.$Message.success(res.message);
+        } else {
+          this.$Message.error(res.message);
+        }
+      },
+      closeModal(){
+        this.deleteModal = false;
       }
     }
   }

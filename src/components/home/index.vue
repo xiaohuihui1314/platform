@@ -16,9 +16,6 @@
     data () {
       return {}
     },
-    mounted(){
-      console.log(this);
-    },
     methods: {},
     components: {
       left, right

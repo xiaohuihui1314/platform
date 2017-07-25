@@ -51,6 +51,12 @@ export default new Router({
             require(['components/user/theme'], resolve);
           }
         }, {
+          path: '/liveTelecast',
+          name: '直播',
+          component: function (resolve) {
+            require(['components/user/liveTelecast'], resolve);
+          }
+        }, {
           path: '/friends',
           name: '朋友圈',
           component: function (resolve) {

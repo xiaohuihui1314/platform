@@ -48,6 +48,9 @@
               {
                 name: "个人主题",
                 url: "theme"
+              },{
+                name: "直播",
+                url: "liveTelecast"
               }
             ]
           },

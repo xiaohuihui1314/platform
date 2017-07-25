@@ -8,9 +8,18 @@ import iView from 'iview';
 import 'iview/dist/styles/iview.css';    // 使用 CSS
 import fetch from './plugins/fetch-Plug-in';
 import method from './plugins/method-Plug-in';
+
+// 视频播放器
+import VueVideoPlayer  from 'vue-video-player';
+// VueVideoPlayer.config({
+//   youtube: true,
+//   switcher: true,
+//   hls: true
+// })
 Vue.use(fetch);
 Vue.use(method);
 Vue.use(iView);
+Vue.use(VueVideoPlayer);
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
@@ -19,5 +28,5 @@ new Vue({
   router,
   store,
   template: '<App/>',
-  components: { App }
+  components: {App}
 })

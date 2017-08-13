@@ -12,7 +12,7 @@
       <Form ref="advertForm" :model="advertForm" :rules="ruleValidate" :label-width="80">
         <Form-item label="广告位" prop="adsenseId">
           <Select v-model="advertForm.adsenseId" placeholder="请选择广告位">
-            <Option v-for="adPosition in adPositionData" :value="adPosition._id">{{adPosition.name}}</Option>
+            <Option v-for="adPosition in adPositionData" :value="adPosition._id" key="11">{{adPosition.name}}</Option>
           </Select>
         </Form-item>
         <Form-item label="广告标题" prop="title">

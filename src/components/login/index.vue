@@ -35,6 +35,7 @@
       }
     },
     mounted(){
+//        this.register();
     },
     methods: {
       async  goLogin () {
@@ -47,6 +48,15 @@
         }else {
             this.message=res.message
         }
+      },
+      async  register () {
+        const checkRegister = (dataObj) => this.fetch('POST', '/register', dataObj);
+        let res = await  checkRegister({
+          userName:11,
+          passWord: 11
+        });
+        console.log(res);
+
       },
     }
   }

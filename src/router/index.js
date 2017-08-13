@@ -5,6 +5,7 @@ import Router from 'vue-router'
 Vue.use(Router)
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',
@@ -15,7 +16,6 @@ export default new Router({
     },
     {
       path: '/home',
-      name: '主页',
       component: function (resolve) {
         require(['components/home'], resolve);
       },

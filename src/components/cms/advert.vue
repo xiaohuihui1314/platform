@@ -12,7 +12,7 @@
       <Form ref="advertForm" :model="advertForm" :rules="ruleValidate" :label-width="80">
         <Form-item label="广告位" prop="adsenseId">
           <Select v-model="advertForm.adsenseId" placeholder="请选择广告位">
-            <Option v-for="adPosition in adPositionData" :value="adPosition._id" key="11">{{adPosition.name}}</Option>
+            <Option v-for="(adPosition, index) in adPositionData" :value="adPosition._id" :key="index">{{adPosition.name}}</Option>
           </Select>
         </Form-item>
         <Form-item label="广告标题" prop="title">
@@ -177,6 +177,10 @@
             align: 'center'
           },
           {
+            title: '广告位',
+            key: 'addressName'
+          },
+          {
             title: '广告名称',
             key: 'title'
           },
@@ -206,6 +210,20 @@
           {
             title: '排序',
             key: 'sort'
+          },
+          {
+            title: '图片',
+            width: 150,
+            align: 'center',
+            render: (h, params) => {
+              return h('img', {
+                attrs: {
+                  width: '100%',
+                  height: '100%',
+                  src: this.$file + params.row.url
+                }
+              })
+            }
           },
           {
             title: '操作',
@@ -250,28 +268,28 @@
           index: null,
           id: null
         },
-//        验证
+        //        验证
         ruleValidate: {
           adsenseId: [
-            {required: true, message: '请选择广告位', trigger: 'change'}
+            { required: true, message: '请选择广告位', trigger: 'change' }
           ],
           title: [
-            {required: true, message: '请填写广告标题', trigger: 'blur'}
+            { required: true, message: '请填写广告标题', trigger: 'blur' }
           ],
           link: [
-            {required: true, message: '请填写广告连接', trigger: 'blur'}
+            { required: true, message: '请填写广告连接', trigger: 'blur' }
           ],
           describe: [
-            {required: true, message: '请填写广告描述', trigger: 'blur'}
+            { required: true, message: '请填写广告描述', trigger: 'blur' }
           ],
           startTime: [
-            {required: true, type: 'date', message: '请选择日期', trigger: 'change'}
+            { required: true, type: 'date', message: '请选择日期', trigger: 'change' }
           ],
           endTime: [
-            {required: true, type: 'date', message: '请选择日期', trigger: 'change'}
+            { required: true, type: 'date', message: '请选择日期', trigger: 'change' }
           ],
           sort: [
-            {validator: validateSort, required: true, trigger: 'blur'}
+            { validator: validateSort, required: true, trigger: 'blur' }
           ]
         },
         urlValidator: null,
@@ -295,21 +313,21 @@
       this.searchAdvert();
     },
     methods: {
-//        获取广告位列表
+      //        获取广告位列表
       async getAdsense(){
         const getData = () => this.fetch("get", "/getAdsense");
         let res = await  getData();
         this.adPositionData = res;
       },
-//      获取广告列表
+      //      获取广告列表
       async getAdvert(){
         const getData = () => this.fetch("get", "/getAdvert");
         let res = await  getData();
         this.advertData = res;
       },
-//      新增广告
+      //      新增广告
       postForm(name){
-        this.$refs[name].validate(async(valid) => {
+        this.$refs[name].validate(async (valid) => {
           if (valid && this.uploadList.length !== 0) {
             this.addModal = false;
             this.modalLoad = false;
@@ -330,19 +348,19 @@
       },
       //      删除广告
       async searchAdvert () {
-        const getData = () => this.fetch("post", "/searchAdvert", {id: this.deleteData.id});
+        const getData = () => this.fetch("post", "/searchAdvert", { id: this.deleteData.id });
         let res = await  getData();
         console.log(res);
       },
-//      删除广告弹框提示
+      //      删除广告弹框提示
       removePrompt (row) {
-        this.deleteData.id = row.row._id;
+        this.deleteData.id = row.row.id;
         this.deleteData.index = row.index;
         this.deleteModal = true;
       },
-//      删除广告
+      //      删除广告
       async removeForm () {
-        const getData = () => this.fetch("post", "/deleteAdvert", {id: this.deleteData.id});
+        const getData = () => this.fetch("post", "/deleteAdvert", { id: this.deleteData.id });
         let res = await  getData();
         this.deleteModal = false;
         if (res.code === 200) {
@@ -352,7 +370,7 @@
           this.$Message.error(res.message);
         }
       },
-//      关闭删除广告提示弹框
+      //      关闭删除广告提示弹框
       closeModal(){
         this.deleteModal = false;
       },
@@ -360,12 +378,12 @@
         this.imgName = name;
         this.visible = true;
       },
-//       从 upload 实例删除数据
+      //       从 upload 实例删除数据
       handleRemove (file) {
         const fileList = this.$refs.upload.fileList;
         this.$refs.upload.fileList.splice(fileList.indexOf(file), 1);
       },
-//      上传返回
+      //      上传返回
       handleSuccess (res, file) {
         let fileLength = this.$refs.upload.fileList.length;
         if (fileLength > 1) {

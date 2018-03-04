@@ -23,7 +23,7 @@
     </Carousel>
     <section>
       <p>{{numberData}}</p>
-      <p>{{numberData|filterNum}}</p>
+      <p>{{numberData | filterNum}}</p>
     </section>
   </div>
 </template>
@@ -53,8 +53,8 @@
       }
     },
     filters: {
-      filterNum: function (val) {
-          console.log(typeof val)
+      filterNum: function(val) {
+
         const ss = String(val).split("").reverse();
         let str = "";
         for (let i = 1; i <= ss.length; i++) {
@@ -63,8 +63,7 @@
             str += ",";
           }
         }
-        let aa = str.split("").reverse().join("");
-        return aa
+        return str.split("").reverse().join("");
       }
     }
   }

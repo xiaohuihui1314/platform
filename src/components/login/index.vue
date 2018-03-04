@@ -6,8 +6,8 @@
     <section class="login-form-wrap">
       <div class="login-form">
         <Form>
-          <Input type="password" placeholder="请输入用户名" v-model="login.userName"></Input>
-          <Input type="password" placeholder="请输入密码" v-model="login.passWord"></Input>
+          <Input type="text" placeholder="请输入用户名" v-model="login.userName"/>
+          <Input type="password" placeholder="请输入密码" v-model="login.passWord"/>
           <p class="login-message">{{message}}</p>
           <Button type="primary" @click="goLogin" long>提交</Button>
         </Form>
@@ -31,11 +31,11 @@
           userName: "",
           passWord: ""
         },
-        message:null
+        message: null
       }
     },
     mounted(){
-//        this.register();
+      //        this.register();
     },
     methods: {
       async  goLogin () {
@@ -44,19 +44,18 @@
         console.log(res);
         if (res.id) {
           localStorage.setItem("token", JSON.stringify(res));
-          this.$router.push({path: 'home'});
-        }else {
-            this.message=res.message
+          this.$router.push({ path: 'home' });
+        } else {
+          this.message = res.message
         }
       },
       async  register () {
         const checkRegister = (dataObj) => this.fetch('POST', '/register', dataObj);
         let res = await  checkRegister({
-          userName:11,
+          userName: 11,
           passWord: 11
         });
         console.log(res);
-
       },
     }
   }

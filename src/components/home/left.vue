@@ -2,12 +2,12 @@
   <div class="left-wrap">
     <Menu theme="dark" class="left-menu"  @on-select="getSubMenuName">
       <h1 class="banner">Banner</h1>
-      <Submenu :name="menu.name" v-for="(menu,index) in menuList" key="1" >
+      <Submenu :name="menu.name" v-for="(menu,index) in menuList" :key="index" >
         <template slot="title" >
           <Icon :type="menu.icon"></Icon>
           {{menu.name}}
         </template>
-        <router-link :to="{path:menuItem.url}"  v-for="(menuItem,index1) in menu.children" key="1">
+        <router-link :to="{path:menuItem.url}"  v-for="(menuItem,index1) in menu.children" :key="index1">
           <Menu-item :name="menu.name+'-'+index1">
             {{menuItem.name}}
           </Menu-item>

@@ -3,11 +3,11 @@ export default {
   install(Vue){
     Vue.prototype.$file = imgUrl;
     // ajax
-    Vue.prototype.fetch = async(type = 'GET', url = '', data = {}) => {
+    Vue.prototype.fetch = async (type = 'GET', url = '', data = {}) => {
       type = type.toUpperCase();
       url = baseUrl + url;
       if (type === "GET" && !Object.is(JSON.stringify(data), "{}")) {
-        const paramsArray=[];
+        const paramsArray = [];
         Object.keys(data).forEach(key => paramsArray.push(key + '=' + data[key]));
         if (url.search(/\?/) === -1) {
           url += '?' + paramsArray.join('&')
@@ -23,8 +23,8 @@ export default {
             'Content-Type': 'application/json',
             // "Authorization": JSON.parse(localStorage.getItem("token"))
           },
+          // 跨域方式
           mode: "cors",
-          cache: "force-cache"
         };
         if (type === 'POST') {
           Object.defineProperty(requestConfig, 'body', {

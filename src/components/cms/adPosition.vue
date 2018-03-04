@@ -79,20 +79,20 @@
             align: 'center',
             render: (h, params) => {
               return h('div', [
-//                h('Button', {
-//                  props: {
-//                    type: 'primary',
-//                    size: 'small'
-//                  },
-//                  style: {
-//                    marginRight: '5px'
-//                  },
-//                  on: {
-//                    click: () => {
-//                      this.show(params.index)
-//                    }
-//                  }
-//                }, '查看'),
+                //                h('Button', {
+                //                  props: {
+                //                    type: 'primary',
+                //                    size: 'small'
+                //                  },
+                //                  style: {
+                //                    marginRight: '5px'
+                //                  },
+                //                  on: {
+                //                    click: () => {
+                //                      this.show(params.index)
+                //                    }
+                //                  }
+                //                }, '查看'),
                 h('Button', {
                   props: {
                     type: 'error',
@@ -124,13 +124,13 @@
         },
         ruleCustom: {
           name: [
-            {required: true, message: '请填写广告位名称', trigger: 'blur'}
+            { required: true, message: '请填写广告位名称', trigger: 'blur' }
           ],
           description: [
-            {required: true, message: '请填写描述', trigger: 'blur'}
+            { required: true, message: '请填写描述', trigger: 'blur' }
           ],
           sort: [
-            {validator: validateSort, required: true, trigger: 'blur'}
+            { validator: validateSort, required: true, trigger: 'blur' }
           ]
         }
       }
@@ -147,7 +147,7 @@
       },
       postForm(name){
         this.modalLoad = true;
-        this.$refs[name].validate(async(valid) => {
+        this.$refs[name].validate(async (valid) => {
           if (valid) {
             this.addModal = false;
             this.modalLoad = false;
@@ -170,7 +170,7 @@
         this.deleteModal = true;
       },
       async removeForm () {
-        const getData = () => this.fetch("post", "/deleteAdsense", {id: this.deleteData.id});
+        const getData = () => this.fetch("post", "/deleteAdsense", { id: this.deleteData.id });
         let res = await  getData();
         this.deleteModal = false;
         if (res.code === 200) {

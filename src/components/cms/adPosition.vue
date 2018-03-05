@@ -79,20 +79,6 @@
             align: 'center',
             render: (h, params) => {
               return h('div', [
-                //                h('Button', {
-                //                  props: {
-                //                    type: 'primary',
-                //                    size: 'small'
-                //                  },
-                //                  style: {
-                //                    marginRight: '5px'
-                //                  },
-                //                  on: {
-                //                    click: () => {
-                //                      this.show(params.index)
-                //                    }
-                //                  }
-                //                }, '查看'),
                 h('Button', {
                   props: {
                     type: 'error',

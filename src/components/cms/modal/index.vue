@@ -81,21 +81,75 @@
 <script>
   export default {
     props: [
+      'addModal',
       'advertForm',
       'ruleValidate',
       'adPositionData',
-      'uploadList',
-      'urlValidator',
       'defaultList',
-      'handleSuccess',
-      'handleFormatError',
-      'handleMaxSize',
-      'handleBeforeUpload',
       'modalLoad',
-      'fileList',
+      'urlValidator',
+      'addForm',
     ],
+    data(){
+      return {
+        uploadList: [],
+      }
+    },
+    watch: {
+      uploadList(val){
+        if (val.length > 0) {
+          this.$emit('changeValidator', false);
+          this.$emit('changeFile', val);
+        }
+      },
+      defaultList(val){
+          console.log(val);
+      }
+    },
     mounted(){
       console.log(this);
+      this.uploadList = this.$refs.upload.fileList;
+    },
+    methods: {
+      postForm(name){
+        this.$refs[name].validate((valid) => {
+          this.addForm(valid);
+        });
+      },
+      // 从 upload 实例删除数据
+      handleRemove (file) {
+        const fileList = this.$refs.upload.fileList;
+        this.$refs.upload.fileList.splice(fileList.indexOf(file), 1);
+      },
+      // 上传返回
+      handleSuccess (res, file) {
+        let fileLength = this.$refs.upload.fileList.length;
+        if (fileLength > 1) {
+          this.$refs.upload.fileList.splice(0, fileLength - 1);
+        }
+        file.url = res.url;
+      },
+      handleFormatError (file) {
+        this.$Notice.warning({
+          title: '文件格式不正确',
+          desc: '文件 ' + file.name + ' 格式不正确，请上传 jpg 或 png 格式的图片。'
+        });
+      },
+      handleMaxSize (file) {
+        this.$Notice.warning({
+          title: '超出文件大小限制',
+          desc: '文件 ' + file.name + ' 太大，不能超过 2M。'
+        });
+      },
+      handleBeforeUpload () {
+        const check = this.uploadList.length < 1;
+        if (!check) {
+          this.$Notice.warning({
+            title: '最多只能上传 1 张图片。'
+          });
+        }
+        return check;
+      }
     }
   };
 </script>

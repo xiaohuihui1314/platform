@@ -10,18 +10,16 @@
       v-model="addModal"
       class-name="vertical-center-modal">
       <ModalForm
+        :addModal="addModal"
         :advertForm="advertForm"
         :ruleValidate="ruleValidate"
         :adPositionData="adPositionData"
-        :uploadList="uploadList"
-        :urlValidator="urlValidator"
         :defaultList="defaultList"
-        :handleSuccess="handleSuccess"
-        :handleFormatError="handleFormatError"
-        :handleMaxSize="handleMaxSize"
-        :handleBeforeUpload="handleBeforeUpload"
         :modalLoad="modalLoad"
-        :fileList="fileList"
+        :urlValidator="urlValidator"
+        :addForm="addForm"
+        @changeValidator="changeValidator"
+        @changeFile="changeFile"
       />
     </Modal>
     <Modal
@@ -191,7 +189,7 @@
                   },
                   on: {
                     click: () => {
-                      this.removePrompt(params)
+                      this.editPrompt(params)
                     }
                   }
                 }, '修改')
@@ -220,7 +218,7 @@
           index: null,
           id: null
         },
-        //        验证
+        //  验证
         ruleValidate: {
           adsenseId: [
             { required: true, message: '请选择广告位', trigger: 'change' }
@@ -248,69 +246,66 @@
         defaultList: [],
         imgName: '',
         visible: false,
-        uploadList: []
-      }
-    },
-    watch: {
-      uploadList(val){
-        if (val.length > 0) {
-          this.urlValidator = false;
-        }
+        uploadArray: [],
       }
     },
     mounted(){
-      this.uploadList = this.$refs.upload.fileList;
       this.getAdvert();
       this.getAdsense();
       this.searchAdvert();
     },
     methods: {
-      // 获取广告位列表
+      //  获取广告位列表
       async getAdsense(){
         const getData = () => this.fetch("get", "/getAdsense");
         let res = await  getData();
         this.adPositionData = res;
       },
-      // 获取广告列表
+      //  获取广告列表
       async getAdvert(){
         const getData = () => this.fetch("get", "/getAdvert");
-        let res = await  getData();
+        let res = await getData();
         this.advertData = res;
       },
-      // 新增广告
-      postForm(name){
-        this.$refs[name].validate(async (valid) => {
-          if (valid && this.uploadList.length !== 0) {
-            this.addModal = false;
-            this.modalLoad = false;
-            this.advertForm.url = this.uploadList[0].url;
-            const getData = (data) => this.fetch("post", "/createAdvert", data);
-            let res = await  getData(this.advertForm);
-            if (res.code === 200) {
-              this.$Message.success(res.message);
-              this.getAdvert();
-            } else {
-              this.$Message.error(res.message);
-            }
+      //  新增广告
+      async addForm (valid)  {
+        if (valid && this.uploadArray.length !== 0) {
+          this.addModal = false;
+          this.modalLoad = false;
+          this.advertForm.url = this.uploadArray[0].url;
+          const getData = (data) => this.fetch("post", "/createAdvert", data);
+          let res = await  getData(this.advertForm);
+          if (res.code === 200) {
+            this.$Message.success(res.message);
+            this.getAdvert();
           } else {
-            this.urlValidator = true;
-            this.modalLoad = false;
+            this.$Message.error(res.message);
           }
-        })
+        } else {
+          this.urlValidator = true;
+          this.modalLoad = false;
+        }
       },
-      //      删除广告
+      //  删除广告
       async searchAdvert () {
         const getData = () => this.fetch("post", "/searchAdvert", { id: this.deleteData.id });
         let res = await  getData();
-        console.log(res);
       },
-      //      删除广告弹框提示
+      //  删除广告弹框提示
       removePrompt (row) {
         this.deleteData.id = row.row.id;
         this.deleteData.index = row.index;
         this.deleteModal = true;
       },
-      //      删除广告
+      //  修改弹框
+      editPrompt(params){
+        console.log(params);
+        this.defaultList = [{ url: params.row.url }];
+        this.addModal = true;
+        this.advertForm.adsenseId = params.row.adsenseId;
+        this.advertForm = Object.assign(this.advertForm, params.row);
+      },
+      //  删除广告
       async removeForm () {
         const getData = () => this.fetch("post", "/deleteAdvert", { id: this.deleteData.id });
         let res = await  getData();
@@ -322,7 +317,7 @@
           this.$Message.error(res.message);
         }
       },
-      //      关闭删除广告提示弹框
+      //  关闭删除广告提示弹框
       closeModal(){
         this.deleteModal = false;
       },
@@ -330,40 +325,12 @@
         this.imgName = name;
         this.visible = true;
       },
-      //       从 upload 实例删除数据
-      handleRemove (file) {
-        const fileList = this.$refs.upload.fileList;
-        this.$refs.upload.fileList.splice(fileList.indexOf(file), 1);
+      changeFile: function(data) {
+        this.uploadArray = data;
       },
-      //      上传返回
-      handleSuccess (res, file) {
-        let fileLength = this.$refs.upload.fileList.length;
-        if (fileLength > 1) {
-          this.$refs.upload.fileList.splice(0, fileLength - 1);
-        }
-        file.url = res.url;
+      changeValidator: function(data) {
+        this.urlValidator = data;
       },
-      handleFormatError (file) {
-        this.$Notice.warning({
-          title: '文件格式不正确',
-          desc: '文件 ' + file.name + ' 格式不正确，请上传 jpg 或 png 格式的图片。'
-        });
-      },
-      handleMaxSize (file) {
-        this.$Notice.warning({
-          title: '超出文件大小限制',
-          desc: '文件 ' + file.name + ' 太大，不能超过 2M。'
-        });
-      },
-      handleBeforeUpload () {
-        const check = this.uploadList.length < 1;
-        if (!check) {
-          this.$Notice.warning({
-            title: '最多只能上传 1 张图片。'
-          });
-        }
-        return check;
-      }
     },
     components: {
       ModalForm

@@ -27,7 +27,6 @@
       async test(){
         let res = await this.jsonp(this.url, this.testData);
         console.log(res)
-        console.log(8888)
       }
     },
     components: {

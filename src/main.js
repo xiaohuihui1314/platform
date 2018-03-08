@@ -23,12 +23,26 @@ Vue.use(method);
 Vue.use(iView);
 Vue.use(VueVideoPlayer);
 Vue.config.productionTip = false;
-
+//全局方法 Vue.filter() 注册一个自定义过滤器,必须放在Vue实例化前面
+Vue.filter('time', function(date) {
+  console.log(1)
+  let y = date.getFullYear();
+  let m = date.getMonth() + 1;
+  m = m < 10 ? ('0' + m) : m;
+  let d = date.getDate();
+  d = d < 10 ? ('0' + d) : d;
+  let h = date.getHours();
+  let minute = date.getMinutes();
+  minute = minute < 10 ? ('0' + minute) : minute;
+  let s = date.getSeconds();
+  s = s < 10 ? ('0' + s) : s;
+  return y + '-' + m + '-' + d + '   ' + h + '：' + minute+'：'+s;
+});
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
   store,
   template: '<App/>',
-  components: {App}
+  components: { App }
 });

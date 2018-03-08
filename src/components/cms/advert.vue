@@ -2,9 +2,11 @@
   <div>
     <h1 class="title">广告管理</h1>
     <div class="box-wrap">
+      <div></div>
       <Button type="success" @click="addModal=true">添加广告</Button>
     </div>
-    <Table border :columns="advertCol" :data="advertData"></Table>
+    <Table border :columns="advertCol" :data="showData"></Table>
+    <Page style="margin-top: 25px;float: right" :total="dataCount" :page-size="pageSize" @on-change="pageChange" show-elevator ></Page>
     <Modal
       title="添加广告"
       v-model="addModal"
@@ -109,6 +111,12 @@
         formValidate: {
           date: null
         },
+        //  显示的数据
+        showData: [],
+        //  初始数据条数
+        dataCount: 0,
+        //  每页多少条数据
+        pageSize: 5,
         advertCol: [
           {
             type: 'index',
@@ -147,6 +155,7 @@
             }
           },
           {
+            width: 65,
             title: '排序',
             key: 'sort'
           },
@@ -266,6 +275,12 @@
         const getData = () => this.fetch("get", "/getAdvert");
         let res = await getData();
         this.advertData = res;
+        this.dataCount = res.length;
+        if (res.length < this.pageSize) {
+          this.showData = res;
+        } else {
+          this.showData = res.slice(0, this.pageSize);
+        }
       },
       //  新增广告
       async addForm (valid)  {
@@ -301,6 +316,7 @@
       editPrompt(params){
         console.log(params);
         this.defaultList = [{ url: params.row.url }];
+        this.uploadArray = [];
         this.addModal = true;
         this.advertForm.adsenseId = params.row.adsenseId;
         this.advertForm = Object.assign(this.advertForm, params.row);
@@ -331,6 +347,11 @@
       changeValidator: function(data) {
         this.urlValidator = data;
       },
+      pageChange(page){
+        var _start = ( page - 1 ) * this.pageSize;
+        var _end = page * this.pageSize;
+        this.showData = this.advertData.slice(_start, _end);
+      }
     },
     components: {
       ModalForm
